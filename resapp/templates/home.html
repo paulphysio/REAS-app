@@ -1,0 +1,66 @@
+
+{% extends "base.html" %}
+{% block title %}Home{% endblock%}
+{% block content %}  
+    {% if user.is_authenticated %}  
+    
+   
+
+        <div class="row">
+            {% if user.profile %}
+                <div class="container">
+                    {% if user.profile.profile_pics %}
+                        <h4><a style="font-size: 8px;"><img src="{{ user.profile.profile_pics.url }}" alt="{{ user.username }}" style="width:60px; height:60px; border-radius:30px">{% endif %}</a> <a style="font-size: 20px;font-weight: 700;" >{{ user.first_name}} {{ user.last_name}} {% if user.profile.is_hod %}<i class="bi bi-patch-check-fill" style="color: #5ddbf2;"></i>{% endif %} </a></h4>
+                    
+                </div>
+            {% endif %}
+            {% if user.profile.is_hod %}
+            <!-- Button trigger modal file form -->
+            <div style="padding-left: 10px; padding-right: 10px" class="text-center">
+                <button class = "btn btn-primary hide upload-button"style="font-size:15px;" data-toggle="modal" data-target="#UploadFileModal">upload</button>
+            </div>
+            
+
+           
+            
+        </div><br>  
+        
+        <div class="container">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-danger">{{message}}</div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <center>
+            <div class="files text-center" > 
+            
+                {% for act in activity_list %}
+                    {% if act.user == user %}
+                        <a href="{% url 'file_details' act.pk  %}" ><div class="file text-center">
+                            <h5>
+                                {% if act.file_uploaded.name|length < 20 %}
+                                    {{ act.Department }} {{ act.result_level }}
+                                
+                                {%  else%}
+                                    {{ act.Department }} {{ act.result_level }} results for {{ act.session }} {{ act.semester }} semester
+                                {% endif %}</h5>
+                            
+                        </div></a><br>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </center>
+
+       
+        {% else %}
+        {% if user.profile %}
+        <h3>You are not yet registered as a course advisor in this app, contact the owner of the site to register. </h3>
+        {% else %}
+        <h3>You are not yet registered as a course advisor in this app, contact the owner of the site to register, meanwhile <a href="{% url 'create_profile' %}">create profile</a> </h3>
+        {% endif %}
+       {% endif %}
+    {%else%}
+        <a href="{% url 'login' %}" class="btn btn-primary">Login</a>    
+    {% endif %}
+{% endblock %}

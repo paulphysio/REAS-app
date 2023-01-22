@@ -1,0 +1,698 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>{% block title %}{% endblock%}</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{% static  'assets/img/backlogo.png' %}" rel="icon" style="width: 100px;">
+  <link href="{% static  'assets/img/backlogo.png' %}" rel="apple-touch-icon"style="width: 70px;">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static  'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static  'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static  'assets/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+  <link href="{% static  'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static  'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+  <link href="{% static  'assets/vendor/aos/aos.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static  'assets/css/main.css' %}" rel="stylesheet">
+  <link href="{% static  'main.css' %}" rel="stylesheet">
+  
+  
+</head>
+
+<body>
+{% comment %} <!-- =======================================================
+  * Modal form for Bio
+  ======================================================== -->
+  <div class="modal fade" id="Bio" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ask a question</h5>
+          <!-- <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" >&times;</span>
+          </button> -->
+        </div>
+        <div class="modal-body">
+          <center>
+            <div class="form-container" style="padding:10px; justify-content: center; display: flex"> 
+                <div class="container" >
+                    <form method="POST" enctype="multipart/form-data" class="profile-form" action="{% url 'edit_profile_name' user.pk %}" >
+                        {% csrf_token %}
+                        {{edit_bio}}
+                        <button class="btn btn-primary">Update</button>
+                    </form>
+                </div>
+            </div>
+        </center>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- =======================================================
+  * Closing Modal form for Bio
+  ======================================================== --> {% endcomment %}
+  
+  <!-- =======================================================
+  * Modal form for Ask Question
+  ======================================================== -->
+  <div class="modal fade" id="Ask_question" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ask a question</h5>
+          <!-- <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" >&times;</span>
+          </button> -->
+        </div>
+        <div class="modal-body">
+          <form action="{% url 'question' %}" method="post">
+            {% csrf_token %}
+            <center>
+              <label for="" style="color:blue;">Ask Question and the team will reply you shortly</label>
+    
+                <input id="question" type="text" name="question" class="form-control" placeholder="Ask a Question" style="width:100%;" required>
+                <br>
+                <button class="btn btn-primary question" style="width:50%;">send</button>
+            </center>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- =======================================================
+  * Closing Modal form for Ask Question
+  ======================================================== -->
+  <!-- =======================================================
+  * Modal form for Deleting File
+  ======================================================== -->
+  {% if activity_detail %}
+  <div class="modal fade" id="DeleteFile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Delete this file</h5>
+          <!-- <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" >&times;</span>
+          </button> -->
+        </div>
+        <div class="modal-body">
+          <div class="container">
+            <h3>Are you sure?</h3> 
+            <form action="{% url 'delete_file' activity_detail.pk %}" method="POST" enctype="multipart/form-data" style="font-size:15px">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col">
+                    <button type="submit" class = "btn btn-danger"style="font-size:15px">delete</button> 
+                    </div>
+                </div>
+            </form>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  <!-- =======================================================
+  * Closing Modal form for Deleting File
+  ======================================================== -->
+  
+  
+  <!-- =======================================================
+  * Modal form for Signup
+  ======================================================== -->
+  <div class="modal fade" id="Signup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Sign Up</h5>
+          <!-- <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" >&times;</span>
+          </button> -->
+        </div>
+        <div class="modal-body">
+          <div class="container">
+            <p>If you already have an account, <a href="#" data-toggle="modal" data-target="#Login" style="color: rgb(7, 51, 210);font-weight: 700; font-size: 20px;">Login</a></p>
+          </div>
+          <form action="{% url 'sign_up' %}" method="POST"class="row g-3 needs-validation">
+            {% csrf_token %}
+           
+            <div style="padding:10px"> 
+              {% for field in my_form %}
+                  {{ field|as_crispy_field }}
+                  <p style="color: red">{{ field.error }}</p>
+              {% endfor %}
+              <br>
+              <center>
+                <button class="btn btn-primary signupspin" style="width:100%">Sign Up</button>
+              </center>  
+            </div>
+            <br/>
+                  
+        </form>
+        <div class="container">
+          <p>If you already have an account, <a href="#" data-toggle="modal" data-target="#Login">Login</a></p>
+        </div>
+              </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- =======================================================
+  * Closing Modal form for Signup
+  ======================================================== -->
+  
+  
+  <!-- =======================================================
+  * Modal form for Login
+  ======================================================== -->
+  <div class="modal fade" id="Login" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background-color: rgba(7, 10, 11, 0.50);">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+          <!-- <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" >&times;</span>
+          </button> -->
+        </div>
+        <div class="modal-body">
+          <div class="auth-container">
+            <div class="container" style="padding:10px">
+              <form action="{% url 'login' %}" method="POST">
+                {% csrf_token %}
+                <input id="modallogin_username" type="text" name="username" placeholder="Username" class="form-control"><br>
+                <input id="modallogin_password" type="password" name="password" placeholder="Password" class="form-control"><br>                <center>
+                  <button class="btn btn-primary modloginspin"  style="width:100%">Login</button>
+                </center>
+              </form>
+              <div class="container">
+                <p><a href="#" data-toggle="modal" data-target="#Password_reset">forgot password</a></p>
+                <p>Don't have an account, <a href="#" data-toggle="modal" data-target="#Signup"> Sign Up</a></p>
+              </div>
+          
+          
+            </div>
+          
+            </div>       
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- =======================================================
+  * Closing Modal form for Login
+  ======================================================== -->
+  
+  <!-- =======================================================
+  * Modal form for Logout
+  ======================================================== -->
+  <div class="modal fade" id="Logout" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to logout?</h5>
+          <!-- <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" >&times;</span>
+          </button> -->
+        </div>
+        <div class="modal-body">
+          <a href="{% url 'logout'%}" class="btn btn-danger logout" style="width: 100%;">Yes I'm sure</a>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- =======================================================
+  * Closing Modal form for Logout
+  ======================================================== -->
+
+<!-- =======================================================
+  * Modal form for Password reset
+  ======================================================== -->
+  <div class="modal fade" id="Password_reset" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Password reset</h5>
+          <!-- <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" >&times;</span>
+          </button> -->
+        </div>
+        <div class="modal-body">
+          <p>Forgotten your password? Enter your email address below, and we’ll email instructions for setting a new one.</p>
+
+          <form action="{% url 'password_reset' %}" method="post" class="form-group">
+            {% csrf_token %}
+            <div class="auth-container">
+              <label for="id_email">Email:</label>
+              <input type="email" name="email" autocomplete="email" maxlength="254" required="" id="id_reset_email" class="form-control"><br>
+              <center>
+                  <button class="btn btn-primary">reset password</button>
+              </center>   
+            </div>
+          </form>        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- =======================================================
+  * Closing Modal form for Password reset
+  ======================================================== -->
+
+ 
+  <!-- =======================================================
+  * Modal form for uploading of Excel file
+  ======================================================== -->
+  <div class="modal fade" id="UploadFileModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Upload Excel File</h5>
+          <!-- <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close" style="width: 50px;">
+            <span aria-hidden="true" >&times;</span>
+          </button> -->
+        </div>
+        <div class="modal-body">
+          <div class="container text-center" style="padding-top:10px">
+            <form action="{% url 'activity_form' %}" method="POST" enctype="multipart/form-data" style="font-size:15px">
+                {% csrf_token %}
+                <div class="row" >
+                  <div class="container">
+                  <input type="file" name="uploaded_file"style="padding-bottom:10px;" class="form-control" required><br>
+                  </div>
+                  <div class="col-6">
+
+                    <select name="result_level" id="result_level" class="form-control">
+                      <option value="100">100</option>
+                      <option value="200">200</option>
+                      <option value="300">300</option>
+                      <option value="400">400</option>
+                      <option value="500">500</option>
+                      <option value="600">600</option>
+                    </select><br>
+                    <select name="Department" id="Department" class="form-control">
+                      <option value="PET">PET</option>
+                      <option value="CHEM">CHEM</option>
+                      <option value="MECH">MECH</option>
+                    </select>
+                  </div>
+                  <br>
+                  <div class="col-6">
+                  <select name="session" id="session" class="form-control">
+                    <option value="2020/2021">2020/2021</option>
+                    <option value="2021/2022">2021/2022</option>
+                    <option value="2022/2023">2022/2023</option>
+                    <br>
+                  </select>
+                  <br>
+                  <select name="semester" id="semester" class="form-control">
+                    <option value="Rain">Rain</option>
+                    <option value="Harmattan">Harmattan</option>
+                  </select>
+                  <br>
+                </div>
+                  <br>
+                  <div class="container">
+                  <button type="submit" class = "btn btn-primary"style="font-size:15px; width:100%">upload</button>
+                  </div>
+                  <br>
+                  <a style="color: red;">Please upload excel files only!!! </a>
+                </div> 
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- =======================================================
+  * Closing Modal form for uploading of Excel file
+  ======================================================== -->
+
+  <!-- The Modal -->
+ <div id="myModal" class="modal1">
+
+  
+
+  <!-- Modal Content (The Image) -->
+  <img class="modal-content1" id="img01">
+  
+  <!-- Modal Caption (Image Text) -->
+  <div id="caption"></div>
+  <!-- The Close Button -->
+  <span class="close">&times;</span>
+</div>
+
+
+ <!-- The Modal -->
+ <div id="myModal2" class="modal2">
+
+  
+
+  <!-- Modal Content (The Image) -->
+  <img class="modal-content" id="img02">
+  
+  <!-- Modal Caption (Image Text) -->
+  <div id="caption2"></div>
+  <!-- The Close Button -->
+  <span class="close2">&times;</span>
+</div>
+
+
+ <!-- The Modal -->
+ <div id="myModal3" class="modal3">
+
+  
+
+  <!-- Modal Content (The Image) -->
+  <img class="modal-content" id="img03">
+  
+  <!-- Modal Caption (Image Text) -->
+  <div id="caption3"></div>
+  <!-- The Close Button -->
+  <span class="close3">&times;</span>
+</div>
+
+
+ <!-- The Modal -->
+ <div id="myModal4" class="modal4">
+
+  
+
+  <!-- Modal Content (The Image) -->
+  <img class="modal-content" id="img04">
+  
+  <!-- Modal Caption (Image Text) -->
+  <div id="caption4"></div>
+  <!-- The Close Button -->
+  <span class="close4">&times;</span>
+</div>
+
+
+ <!-- The Modal -->
+ <div id="myModal5" class="modal5">
+
+  
+
+  <!-- Modal Content (The Image) -->
+  <img class="modal-content" id="img05">
+  
+  <!-- Modal Caption (Image Text) -->
+  <div id="caption5"></div>
+  <!-- The Close Button -->
+  <span class="close5">&times;</span>
+</div>
+
+
+ <!-- The Modal -->
+ <div id="myModal6" class="modal6">
+
+  
+
+  <!-- Modal Content (The Image) -->
+  <img class="modal-content" id="img06">
+  
+  <!-- Modal Caption (Image Text) -->
+  <div id="caption6"></div>
+  <!-- The Close Button -->
+  <span class="close6">&times;</span>
+</div>
+
+
+  
+  <!-- ======= Header ======= -->
+  <header id="header" class="header d-flex align-items-center fixed-top sticked">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+    <a href="{% url 'about'%}" class="logo d-flex align-items-center">
+            <!-- Uncomment the line below if you also wish to use an image logo -->
+            <img src="{% static  'assets/img/whitelogo.png' %}" alt="">
+            <!-- <h1>RAES</h1> -->
+          </a>
+    {% if user.is_authenticated %}
+      {% if user.profile %}
+        {% if user.profile.profile_pics %}
+        <div class="row" style="max-width: 50%">
+          
+          <div class="col-6" style="padding-top: 10px">
+            <a href="{% url 'home' %}" class="btn btn-primary">Upload Results</a>
+          </div>
+          <div class="col-3" style="padding-top: 10px">
+            <a href="#" class="logo d-flex align-items-right" >
+              <!-- Uncomment the line below if you also wish to use an image logo -->
+                Support
+            </a>
+          </div>
+          <div class="col-3">
+            <a href="#" class="logo d-flex align-items-right pop" >
+              <!-- Uncomment the line below if you also wish to use an image logo -->
+              <img src="{{ user.profile.profile_pics.url }}" alt="{{ user.username }}" >
+            </a>
+          </div>
+          
+             </div>
+        {% else %}
+        <a href="{% url 'edit_profile' user.profile.id %}" class="logo d-flex align-items-center pop">
+          <!-- Uncomment the line below if you also wish to use an image logo -->
+          <div style="width: 50px; height:50px; background-color:brown; border-radius: 50%; color:white">
+            {% for i in user.username %}
+              {% if forloop.first %}
+                <h1 class="text-center" style="padding-top: 8px;">{{i}}</h1>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </a>
+        {% endif %}
+      {% else %}
+        <a href="{% url 'create_profile' %}" class="logo d-flex align-items-center">
+          <!-- Uncomment the line below if you also wish to use an image logo -->
+          <div style="width: 50px; height:50px; background-color:brown; border-radius: 50%; color:white">
+            {% for i in user.username %}
+              {% if forloop.first %}
+                <h1 class="text-center" style="padding-top: 8px;">{{i}}</h1>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </a>
+        {% endif %}
+      {%else%}
+      <div class="au" style="max-width: 500px">
+        <p><a href="#" data-toggle="modal" data-target="#Login" class="btn btn-primary "  >Login</a>
+        <a href="#" data-toggle="modal" data-target="#Signup" style="padding-left: 20px;" class="signup">Signup</a></p>
+        </div>
+        <!-- <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+              <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+              <nav id="navbar" class="navbar" >
+                <ul> -->
+                  <!-- <li><a href="{% url 'home' %}" >Home</a></li> -->
+                  <!-- <li><a href="{% url 'about' %}" >About</a></li> -->
+                  <!-- {% if user.profile %}
+                    <li><a href="{% url 'edit_profile' user.profile.id %}" >Profile</a></li>
+                    {%else%}
+                    
+                    <li><a href="{% url 'create_profile' %}" >Profile</a></li>
+                    
+                    {%endif%} -->
+                    <!-- <li><a href="{% url 'chat_list'%}">Chat</a></li> -->
+                    <!-- <li><a href="#" data-toggle="modal" data-target="#Logout">Logout</a></li> -->
+                
+                    <!-- <li> <a href="#" data-toggle="modal" data-target="#Login"  >Login </a></li>
+                      <li><a href="#" data-toggle="modal" data-target="#Signup" >Signup</a></li> -->
+
+                  
+      {% endif %}
+      
+     
+        </ul>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+  <!-- End Header -->
+
+  
+
+  <main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <!-- <div class="breadcrumbs">
+      <div class="page-header d-flex align-items-center">
+        <div class="container position-relative">
+          <div class="row d-flex justify-content-center">
+            <div class="col-lg-1 text-center">
+              <h2>O</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+      <nav>
+        
+      </nav>
+    </div>End Breadcrumbs -->
+
+    <section class="sample-page">
+      <div class="container " data-aos="fade-up">
+        <style>
+          section {
+              animation: fadeInAnimation ease 3s;
+              animation-iteration-count: 1;
+              animation-fill-mode: forwards;
+          }
+          @keyframes fadeInAnimation {
+              0% {
+                  opacity: 0;
+              }
+              100% {
+                  opacity: 1;
+              }
+          }
+      </style>
+      
+      <!-- <div class="col-1">
+      <a href="#" data-toggle="modal" data-target="#Signup" class="btn btn-primary">Signup</a>
+      </div> -->
+   
+      <input id="userid" type="text" value="{{user.id}}" hidden>
+      
+      <p id="user" hidden><a>{{user.first_name}} {{user.last_name}} {% if user.profile.is_hod %}<i class="bi bi-patch-check" style="color: #5ddbf2;"></i>{% endif %}</a></p>
+      {% if user.profile %}
+      <input id="userprofileid" type="text" value="{{user.profile.id}}" hidden>
+      {% endif %}
+        {% block content %}
+        {% endblock %}
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+<div>
+  <center>
+    <i class="bi bi-windows" style=" font-size: 50px"></i> <i class="bi bi-apple"  style="font-size: 50px"></i>
+  </center><br> <center> <hr style="width: 75%;"></center>
+</div>
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-lg-5 col-md-12 footer-info">
+          <a href="{% url 'about' %}" class="logo d-flex align-items-center">
+            <img src="{% static  'assets/img/noback.png' %}" alt="" style="height: 20px; padding-bottom: 0px">
+          </a>
+          <a style="padding-top: 0px;"> RAES is a platform that eliminates problems faced by course advisers in the course of distributing results to students. Here we will provide you with a hassle-free way to distribute results without wasting time and energy. We're working to reduce down-time faced as well as helping students and course advisers keep records of sent results.
+          </a>          <div class="social-links d-flex mt-4">
+            <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+            <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+            <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+            <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="{% url 'home' %}">Result upload</a></li>
+            <li><a href="{% url 'about_us' %}">About us</a></li>
+            <li><a href="{% url 'guides' %}">Guides and Tutorials</a></li>
+            <li><a href="#">Help Center</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Our Services</h4>
+          <ul>
+            <li><a href="{% url 'about_us' %}">About Us</a></li>
+            <li><a href="#">Web Design</a></li>
+            <li><a href="#">Web Development</a></li>
+            <li><a href="#">Graphic Design</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+          <h4>Contact Us</h4>
+          <p>
+            Petroleum Engineering Department <br>
+            FUTO, Imo State<br>
+            Nigeria <br><br>
+            <!-- <strong>Phone:</strong> +234 814 631 1456<br>
+            <strong>Email:</strong> Emilyjohnson25099@gmail.com<br> -->
+          </p>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container mt-4">
+      <div class="copyright">
+        &copy; Copyright <strong><span>ELPA</span></strong>. All Rights Reserved
+      </div>
+      <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/logis-bootstrap-logistics-website-template/ -->
+        Designed by <a href="{% url 'about_us' %}">ELPA Technologies</a>
+      </div>
+    </div>
+
+  </footer><!-- End Footer -->
+  <!-- End Footer -->
+
+  <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static  'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static  'assets/vendor/bootstrap/js/purecountervanilla.js' %}"></script>
+  <script src="{% static  'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static  'assets/vendor/bootstrap/js/swiperbundle.min.js' %}"></script>
+  <script src="{% static  'assets/vendor/aos/aos.js' %}"></script>
+  <script src="{% static  'assets/vendor/popper/jquery-3.2.1.slim.min.js' %}"></script>
+  <script src="{% static  'assets/vendor/popper/popper.min.js' %}"></script>
+  <script src="{% static  'assets/vendor/popper/bootstrap.min.js' %}"></script>
+  <script src="{% static  'assets/vendor/php-email-form/validate.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static  'assets/js/main.js' %}"></script>
+  <script src="{% static  'main.js' %}"></script>
+
+</body>
+
+</html>
