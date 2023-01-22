@@ -1,8 +1,9 @@
 # REAS-app
-*Student Results Emailer*
+#*Student Results Emailer*
+
 This web app allows users to upload an Excel file containing student results, and automatically sends the results to each student's email address.
 
-*Getting Started*
+#*Getting Started*
 To use this app, simply upload an Excel file containing the following columns:
 
 "Email": the email address of the student
@@ -11,7 +12,8 @@ To use this app, simply upload an Excel file containing the following columns:
 The app will then extract the information from the Excel file and use it to send an email to each student containing their results.
 
 
-Built With
+#Built With
+
 Django - The web framework used
 Google API Client Library for Python - Used for sending the emails via the Gmail API
 Pandas - Used for reading and manipulating the Excel file
