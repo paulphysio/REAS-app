@@ -14,8 +14,7 @@ def sendMail(request, pk):
     port = 465
     email = 'emilyjohnson25099@gmail.com'
     password = "wlwzkvalbpwebxot"
-    # Counter for the number of emails sent
-    counter = 0
+    counter=0
     activity_detail = activity.objects.get(id=pk)
     sheet = activity_detail.file_uploaded
     df = pd.read_excel(sheet)
@@ -50,7 +49,6 @@ def sendMail(request, pk):
         headmsg = (' | '.join(map(str, lister)))
         body_message =(' | '.join(map(str, list)))
         receiver = str(wa.cell(row=i, column=email_index+ 1).value)
-        print(receiver)
         context = ssl.create_default_context()
         server=smtplib.SMTP_SSL("smtp.gmail.com", port, context=context)
         server.login(email, password)
@@ -92,7 +90,6 @@ def sendMail(request, pk):
             time.sleep(5)
             counter = 0
         print("message sent")
-        time.sleep(1)
         if request.method == 'POST':
 
             sender = request.user
