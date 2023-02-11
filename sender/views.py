@@ -8,12 +8,14 @@ from resapp.models import activity
 from .models import emailSender
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import time
 # Create your views here.
 def sendMail(request, pk):
     port = 465
     email = 'emilyjohnson25099@gmail.com'
     password = "wlwzkvalbpwebxot"
-
+    # Counter for the number of emails sent
+    counter = 0
     activity_detail = activity.objects.get(id=pk)
     sheet = activity_detail.file_uploaded
     df = pd.read_excel(sheet)
@@ -48,6 +50,7 @@ def sendMail(request, pk):
         headmsg = (' | '.join(map(str, lister)))
         body_message =(' | '.join(map(str, list)))
         receiver = str(wa.cell(row=i, column=email_index+ 1).value)
+        print(receiver)
         context = ssl.create_default_context()
         server=smtplib.SMTP_SSL("smtp.gmail.com", port, context=context)
         server.login(email, password)
@@ -81,8 +84,15 @@ def sendMail(request, pk):
         # em.attach(part1)
         em.attach(part2)
         #em.attach(part3)
-        server.sendmail(email, receiver, em.as_string())
+        if counter <= 20:
+            server.sendmail(email, receiver, em.as_string())
+            counter += 1
+        else:
+            # Add a delay of 1 minute if the counter is over 20
+            time.sleep(5)
+            counter = 0
         print("message sent")
+        time.sleep(1)
         if request.method == 'POST':
 
             sender = request.user
