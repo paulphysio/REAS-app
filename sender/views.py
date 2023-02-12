@@ -38,60 +38,61 @@ def sendMail(request, pk):
                 f_msg.append(lister)
     for i in range(2, wa.max_row+1):
         list=[]
-        for j in range(1, wa.max_column+1):
-            cell_obj = wa.cell(row=i, column=j)
-            x = wa.cell(row=i, column=j).value
-            list.append(x)
-            if j==(wa.max_column):
-                reallist.append(list)
-                
-        print("sending " + str(list) +" to "+ str(wa.cell(row=i, column=email_index+ 1).value ))
-        headmsg = (' | '.join(map(str, lister)))
-        body_message =(' | '.join(map(str, list)))
-        receiver = str(wa.cell(row=i, column=email_index+ 1).value)
-        context = ssl.create_default_context()
-        server=smtplib.SMTP_SSL("smtp.gmail.com", port, context=context)
-        server.login(email, password)
-        em = MIMEMultipart("alternative")
-        em['From'] = 'The Course Adviser'
-        em['To'] = receiver
-        em['Subject'] = "Harmattan semester results"
-        
-        text = body_message
-        results = []
-        for i in range(len(lister)):
-            for j in range(len(list)):
-                if i == j:
-                    #print(str(lister[i]) + ":" + str(list[j]))
-                    result = str(lister[i]) + " : " + str(list[j])+";"
-                    results.append(result)
-        name= ('\n '.join(map(str, results)))
-                    
-                    
-            
-        html = f"""\
-            <h1>This message contains the results for the harmattan semester.</h1>
-            <h3>{name}</h3>
-            
-            """
-            
-        real_result = name
-        # part1 = MIMEText(text, "plain")
-        part2 = MIMEText(html, "html")
-        part3 = MIMEText(real_result, "plain")
-        # em.attach(part1)
-        em.attach(part2)
-        #em.attach(part3)
         if counter <= 20:
-            server.sendmail(email, receiver, em.as_string())
-            counter += 1
-            time.sleep(5)
 
+            for j in range(1, wa.max_column+1):
+                cell_obj = wa.cell(row=i, column=j)
+                x = wa.cell(row=i, column=j).value
+                list.append(x)
+                if j==(wa.max_column):
+                    reallist.append(list)
+                    
+            print("sending " + str(list) +" to "+ str(wa.cell(row=i, column=email_index+ 1).value ))
+            headmsg = (' | '.join(map(str, lister)))
+            body_message =(' | '.join(map(str, list)))
+            receiver = str(wa.cell(row=i, column=email_index+ 1).value)
+            context = ssl.create_default_context()
+            server=smtplib.SMTP_SSL("smtp.gmail.com", port, context=context)
+            server.login(email, password)
+            em = MIMEMultipart("alternative")
+            em['From'] = 'The Course Adviser'
+            em['To'] = receiver
+            em['Subject'] = "Harmattan semester results"
+            
+            text = body_message
+            results = []
+            for i in range(len(lister)):
+                for j in range(len(list)):
+                    if i == j:
+                        #print(str(lister[i]) + ":" + str(list[j]))
+                        result = str(lister[i]) + " : " + str(list[j])+";"
+                        results.append(result)
+            name= ('\n '.join(map(str, results)))
+                        
+                        
+                
+            html = f"""\
+                <h1>This message contains the results for the harmattan semester.</h1>
+                <h3>{name}</h3>
+                
+                """
+                
+            real_result = name
+            # part1 = MIMEText(text, "plain")
+            part2 = MIMEText(html, "html")
+            part3 = MIMEText(real_result, "plain")
+            # em.attach(part1)
+            em.attach(part2)
+            #em.attach(part3)
+                
+            server.sendmail(email, receiver, em.as_string())
+            counter = counter+1
         else:
             # Add a delay of 1 minute if the counter is over 20
-            time.sleep(5)
+            time.sleep(30)
             counter = 0
         print("message sent")
+        
         if request.method == 'POST':
 
             sender = request.user
