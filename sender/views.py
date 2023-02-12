@@ -85,6 +85,8 @@ def sendMail(request, pk):
         if counter <= 20:
             server.sendmail(email, receiver, em.as_string())
             counter += 1
+            time.sleep(5)
+
         else:
             # Add a delay of 1 minute if the counter is over 20
             time.sleep(5)
