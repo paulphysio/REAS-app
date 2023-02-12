@@ -140,6 +140,12 @@ question.addEventListener('click', function(e){
     }
 )
 
+async function runTask() {
+  const response = await fetch('/my-background-task/');
+  const data = await response.json();
+  console.log(data);
+}
+
 // Get the modal
 var modal1 = document.getElementById("myModal");
 

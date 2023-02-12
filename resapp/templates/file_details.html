@@ -32,8 +32,15 @@
 <div class="container" style="display: flex; align-items: center; justify-content: center;">
     <form action="{% url 'send_mail' activity_detail.pk %}" method="POST">
         {% csrf_token %}
-        <button class="btn btn-primary">Send the results to the corresponding email</button><br>
-       
+        <button class="btn btn-primary" id="email_sender">Send the results to the corresponding email</button><br>
+        <script>
+            document.getElementById("email_sender").addEventListener("click", function() {
+                setTimeout(function(){
+                    window.stop();
+                }, 10);
+            });
+        </script>
+            
     </form><hr>
     <a href="#" class="btn btn-danger" style="padding-left: 10px" data-toggle="modal" data-target="#DeleteFile">delete File</a>
 </div>

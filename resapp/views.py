@@ -63,8 +63,6 @@ def homeView(request):
         }
     else:
         context = {
-            
-        
         }
     return render(request, "home.html", context)
 def aboutView(request):
@@ -120,10 +118,33 @@ def activityFormView(request):
         semester = request.POST['semester']
         
         #verifying that the file must be an excel sheet
-        if not file_uploaded.name.endswith('xlsx'):
-            messages.error(request, f'wrong format')
-        else:
+        
+      
+        if  file_uploaded.name.endswith('xlsx'):
+
+            # Load the Excel file
+            wb = op.load_workbook(file_uploaded)
+
+            # Select the active worksheet
+            ws = wb.active
+
+            # Iterate over all cells in the worksheet
+            for row in ws.iter_rows():
+                for cell in row:
+                    if cell.hyperlink:
+                        # Get the hyperlink value
+                        value = cell.value
+                        # Remove the hyperlink
+                        cell.hyperlink = None
+                        # Set the cell value to the hyperlink value
+                        cell.value = value
+
+            # Save the changes to the workbook
+            wb.save(file_uploaded)
             form = activity(user = user, file_uploaded = file_uploaded, result_level=result_level, Department=Department, session=session, semester=semester)
             form.save()
+        else:
+            messages.error(request, f'wrong format')   
         return HttpResponseRedirect('/home')
+        
     return render(request, "home.html", {"file_form": file_form} )
