@@ -86,7 +86,6 @@ def sendMail(request, pk):
             #em.attach(part3)
                 
             server.sendmail(email, receiver, em.as_string())
-            server.quit()
             counter = counter+1
         else:
             # Add a delay of 1 minute if the counter is over 20
