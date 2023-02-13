@@ -14,7 +14,7 @@ def sendMail(request, pk):
     port = 465
     email = 'emilyjohnson25099@gmail.com'
     password = "wlwzkvalbpwebxot"
-    counter=0
+    counter=1
     activity_detail = activity.objects.get(id=pk)
     sheet = activity_detail.file_uploaded
     df = pd.read_excel(sheet)
@@ -38,7 +38,7 @@ def sendMail(request, pk):
                 f_msg.append(lister)
     for i in range(2, wa.max_row+1):
         list=[]
-        if counter <= 20:
+        if counter <= 25:
 
             for j in range(1, wa.max_column+1):
                 cell_obj = wa.cell(row=i, column=j)
@@ -47,7 +47,7 @@ def sendMail(request, pk):
                 if j==(wa.max_column):
                     reallist.append(list)
                     
-            print("sending " + str(list) +" to "+ str(wa.cell(row=i, column=email_index+ 1).value ))
+            # print("sending " + str(list) +" to "+ str(wa.cell(row=i, column=email_index+ 1).value ))
             headmsg = (' | '.join(map(str, lister)))
             body_message =(' | '.join(map(str, list)))
             receiver = str(wa.cell(row=i, column=email_index+ 1).value)
@@ -89,9 +89,9 @@ def sendMail(request, pk):
             counter = counter+1
         else:
             # Add a delay of 1 minute if the counter is over 20
-            time.sleep(1)
+            time.sleep(2)
             counter = 0
-        print("message sent")
+        # print("message sent")
         
         if request.method == 'POST':
 
