@@ -89,7 +89,7 @@ def sendMail(request, pk):
             counter = counter+1
         else:
             # Add a delay of 1 minute if the counter is over 20
-            time.sleep(5)
+            time.sleep(1)
             counter = 0
         print("message sent")
         
