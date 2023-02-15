@@ -9,30 +9,11 @@ from .models import emailSender
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import time
-import threading
-import concurrent.futures
 # Create your views here.
 def sendMail(request, pk):
-    
-    def send_email(recipient, body):
-        try:
-            port = 465
-            email = 'emilyjohnson25099@gmail.com'
-            password = "wlwzkvalbpwebxot"
-            context = ssl.create_default_context()
-            server=smtplib.SMTP_SSL("smtp.gmail.com", port, context=context)
-            server.login(email, password)
-            em = MIMEMultipart("alternative")
-            em['From'] = 'The Course Adviser'
-            em['To'] = receiver
-            em['Subject'] = "Harmattan semester results"
-            # for receiverr, message in zip(receiver_list, reallist):
-            server.sendmail(email, str(recipient), str(body))
-            server.quit()
-            print('Email sent to {}'.format(recipient))
-        except Exception as e:
-            print('Error: {}'.format(e))
-    
+    port = 465
+    email = 'emilyjohnson25099@gmail.com'
+    password = "wlwzkvalbpwebxot"
     counter=0
     activity_detail = activity.objects.get(id=pk)
     sheet = activity_detail.file_uploaded
@@ -75,16 +56,51 @@ def sendMail(request, pk):
             # Add a delay of 1 minute if the counter is over 20
             time.sleep(5)
             counter = 0
+        print("message sent")
+    print(receiver_list)
+    # print("sending " + str(list) +" to "+ str(wa.cell(row=i, column=email_index+ 1).value ))
+    headmsg = (' | '.join(map(str, lister)))
+    body_message =(' | '.join(map(str, list)))
+    
+    context = ssl.create_default_context()
+    server=smtplib.SMTP_SSL("smtp.gmail.com", port, context=context)
+    server.login(email, password)
+    em = MIMEMultipart("alternative")
+    em['From'] = 'The Course Adviser'
+    em['To'] = receiver
+    em['Subject'] = "Harmattan semester results"
+    for receiverr, message in zip(receiver_list, reallist):
+        server.sendmail(email, str(receiverr), str(message))
+    # text = body_message
+    # results = []
+    # for i in range(len(lister)):
+    #     for j in range(len(list)):
+    #         if i == j:
+    #             #print(str(lister[i]) + ":" + str(list[j]))
+    #             result = str(lister[i]) + " : " + str(list[j])+";"
+    #             results.append(result)
+    # name= ('\n '.join(map(str, results)))
+                
+                
         
-    with concurrent.futures.ThreadPoolExecutor(max_workers=13) as executor:
-        for i in range(len(receiver_list)):
-            recipient = receiver_list[i]
-            body = reallist[i]
-            executor.submit(send_email, recipient, body)
-    
+    # html = f"""\
+    #     <h1>This message contains the results for the harmattan semester.</h1>
+    #     <h3>{name}</h3>
+        
+    #     """
+        
+    # real_result = name
+    # # part1 = MIMEText(text, "plain")
+    # part2 = MIMEText(html, "html")
+    # part3 = MIMEText(real_result, "plain")
+    # # em.attach(part1)
+    # em.attach(part2)
+    # #em.attach(part3)
+        
+    # server.sendmail(email, receiver, em.as_string())
+    # counter = counter+1
 
-    print('All emails sent.')
-    
+        
     if request.method == 'POST':
 
         sender = request.user
