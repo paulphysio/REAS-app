@@ -467,7 +467,7 @@
           </a>
     {% if user.is_authenticated %}
       {% if user.profile %}
-        {% if user.profile.profile_pics %}
+        
         <div class="row" style="max-width: 50%">
           
           <div class="col-6" style="padding-top: 10px">
@@ -480,8 +480,10 @@
             </a>
           </div>
           <div class="col-3">
+            {% if user.profile.profile_pics %}
             <a href="#" class="logo d-flex align-items-right pop" >
               <!-- Uncomment the line below if you also wish to use an image logo -->
+              
               <img src="{{ user.profile.profile_pics.url }}" alt="{{ user.username }}" >
             </a>
           </div>

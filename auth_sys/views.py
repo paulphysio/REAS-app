@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView, View
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
@@ -71,10 +71,19 @@ def createProfileView(request):
     if request.method == 'POST':
         user = request.user
         profile_pics = request.FILES["profile_pics"]
-        
-        profile(profile_pics = profile_pics, user = user, is_hod = False).save()
+        print(profile_pics.name)
+        if profile_pics.size > 500 * 1024:  # Check if the file size is greater than 100 KB
+            profile(profile_pics = "", user = user, is_hod = False).save()
 
-        return HttpResponseRedirect("/")
+
+        # Process the uploaded image here
+        # ...
+        else:
+            profile(profile_pics = profile_pics, user = user, is_hod = False).save()
+
+        # Return a success response        
+
+        
     return render(request, "registration/create_profile.html")
 
 class editProfileView(UpdateView):
