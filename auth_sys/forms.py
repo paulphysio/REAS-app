@@ -3,6 +3,7 @@ from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import profile
+from django.core.exceptions import ValidationError
 
 
 
@@ -53,6 +54,12 @@ class ProfileEditForm(ModelForm):
     class Meta:
         model = profile
         fields = ("profile_pics",)
+        
+    def clean_file(self):
+        file = self.cleaned_data.get('profile_pics')
+        if file and file.size > 1024 * 1024:  # Set the maximum file size to 1 MB
+            raise ValidationError("File size must be less than 1 MB.")
+        return file
         
 class ProfileNameForm(ModelForm):
     class Meta:

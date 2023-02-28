@@ -82,7 +82,7 @@ def createProfileView(request):
             profile(profile_pics = profile_pics, user = user, is_hod = False).save()
 
         # Return a success response        
-
+        return redirect("home")
         
     return render(request, "registration/create_profile.html")
 
