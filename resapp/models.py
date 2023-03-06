@@ -2,6 +2,7 @@ from email.policy import default
 from random import choices
 from django.db import models
 from django.contrib.auth.models import User, AnonymousUser
+import threading
 
 # Create your models here.
 class activity(models.Model):
@@ -21,6 +22,9 @@ class activity(models.Model):
 
     def __str__(self):
         return str(self.user)
+    def  delete_after_delay(self):
+        t=threading.Timer(60.0, self.delete)
+        t.start()
     
 class askedQuestions(models.Model):
     """ user = models.ForeignKey(User, on_delete=models.CASCADE, null = True, blank = True) """

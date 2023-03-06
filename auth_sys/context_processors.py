@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from auth_sys.views import SignUpForm, UserCreationForm, ProfileEditForm
+from auth_sys.views import SignUpForm, UserCreationForm
 
 
 def base_data(request):
@@ -8,6 +8,5 @@ def base_data(request):
     # MyForm(request.GET, user=request.user)
     data["my_form"] = SignUpForm()
     data["login_form"] = UserCreationForm()
-    data['Edit_bio'] = ProfileEditForm
     
     return data

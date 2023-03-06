@@ -12,7 +12,7 @@ from .models import profile
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .forms import SignUpForm, ProfileEditForm, ProfileNameForm
+from .forms import SignUpForm, ProfileNameForm
 from django.contrib.auth import login, authenticate
 from django.core import serializers
 # Create your views here.
@@ -70,25 +70,26 @@ def loginView(request):
 def createProfileView(request):
     if request.method == 'POST':
         user = request.user
-        profile_pics = request.FILES["profile_pics"]
-        print(profile_pics.name)
-        if profile_pics.size > 500 * 1024:  # Check if the file size is greater than 100 KB
-            profile(profile_pics = "", user = user, is_hod = False).save()
+        # profile_pics = request.FILES["profile_pics"]
+        # print(profile_pics.name)
+        # if profile_pics.size > 500 * 1024:  # Check if the file size is greater than 100 KB
+        #     profile(profile_pics = "", user = user, is_hod = False).save()
 
 
-        # Process the uploaded image here
-        # ...
-        else:
-            profile(profile_pics = profile_pics, user = user, is_hod = False).save()
+        # # Process the uploaded image here
+        # # ...
+        # else:
+        #     profile(profile_pics = profile_pics, user = user, is_hod = False).save()
 
-        # Return a success response        
+        # # Return a success response    
+        profile(user = user, is_hod = False).save()    
         return redirect("home")
         
     return render(request, "registration/create_profile.html")
 
-class editProfileView(UpdateView):
-    model = profile
-    form_class = ProfileEditForm
-    template_name = "registration/edit_profile.html"
-    def get_success_url(self):
-        return reverse("edit_profile", args=[self.object.pk])
+# class editProfileView(UpdateView):
+#     model = profile
+#     form_class = ProfileEditForm
+#     template_name = "registration/edit_profile.html"
+#     def get_success_url(self):
+#         return reverse("edit_profile", args=[self.object.pk])

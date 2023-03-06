@@ -10,9 +10,9 @@ $(function () {
     title:user,
     content: `
     
-      <p><a href="/users/profile/edit/${userid}" >Profile</a></p>      
-      <p><a href="/chat">Chat</a></p>
-      <p><a href="/users/logout">Logout</a></p>
+    <p><a href="#">Chat (coming soon)</a></p>
+    <p><a href="/about_us">About Us</a></p>
+    <p><a href="/users/logout">Logout</a></p>
    
   `
   })

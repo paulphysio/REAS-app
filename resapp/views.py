@@ -9,6 +9,7 @@ from django.views.generic import DeleteView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import AnonymousUser
 from .forms import ActivityForm
+from django.utils import timezone
 
 def questionAskedView(request):
     if request.method=='POST':
@@ -141,8 +142,10 @@ def activityFormView(request):
 
             # Save the changes to the workbook
             wb.save(file_uploaded)
-            form = activity(user = user, file_uploaded = file_uploaded, result_level=result_level, Department=Department, session=session, semester=semester)
-            form.save()
+            form = activity.objects.create(user = user, file_uploaded = file_uploaded, result_level=result_level, Department=Department, session=session, semester=semester)
+            file_path=form.file_uploaded.path
+            form.delete_after_delay()
+            
         else:
             messages.error(request, f'wrong format')   
         return HttpResponseRedirect('/home')

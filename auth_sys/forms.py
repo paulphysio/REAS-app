@@ -50,16 +50,16 @@ class SignUpForm(UserCreationForm):
         self.fields['password2'].label = ''
 
 
-class ProfileEditForm(ModelForm):
-    class Meta:
-        model = profile
-        fields = ("profile_pics",)
+# class ProfileEditForm(ModelForm):
+#     class Meta:
+#         model = profile
+#         fields = ("profile_pics",)
         
-    def clean_file(self):
-        file = self.cleaned_data.get('profile_pics')
-        if file and file.size > 1024 * 1024:  # Set the maximum file size to 1 MB
-            raise ValidationError("File size must be less than 1 MB.")
-        return file
+#     def clean_file(self):
+#         file = self.cleaned_data.get('profile_pics')
+#         if file and file.size > 1024 * 1024:  # Set the maximum file size to 1 MB
+#             raise ValidationError("File size must be less than 1 MB.")
+#         return file
         
 class ProfileNameForm(ModelForm):
     class Meta:

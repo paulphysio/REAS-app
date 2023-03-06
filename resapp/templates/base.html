@@ -466,7 +466,7 @@
             <!-- <h1>RAES</h1> -->
           </a>
     {% if user.is_authenticated %}
-      {% if user.profile %}
+      
         
         <div class="row" style="max-width: 50%">
           
@@ -480,38 +480,29 @@
             </a>
           </div>
           <div class="col-3">
-            {% if user.profile.profile_pics %}
-            <a href="#" class="logo d-flex align-items-right pop" >
+          {% if user.profile %}
+            <a href="#" class="logo d-flex align-items-center pop">
               <!-- Uncomment the line below if you also wish to use an image logo -->
-              
-              <img src="{{ user.profile.profile_pics.url }}" alt="{{ user.username }}" >
+              <div style="width: 50px; height:50px; background-color:brown; border-radius: 50%; color:white">
+                {% for i in user.username %}
+                  {% if forloop.first %}
+                    <h1 class="text-center" style="padding-top: 8px;">{{i}}</h1>
+                  {% endif %}
+                {% endfor %}
+              </div>
             </a>
-          </div>
-          
-             </div>
+        
         {% else %}
-        <a href="#" class="logo d-flex align-items-center pop">
-          <!-- Uncomment the line below if you also wish to use an image logo -->
-          <div style="width: 50px; height:50px; background-color:brown; border-radius: 50%; color:white">
-            {% for i in user.username %}
-              {% if forloop.first %}
-                <h1 class="text-center" style="padding-top: 8px;">{{i}}</h1>
-              {% endif %}
-            {% endfor %}
-          </div>
-        </a>
-        {% endif %}
-      {% else %}
-        <a href="{% url 'create_profile' %}" class="logo d-flex align-items-center">
-          <!-- Uncomment the line below if you also wish to use an image logo -->
-          <div style="width: 50px; height:50px; background-color:brown; border-radius: 50%; color:white">
-            {% for i in user.username %}
-              {% if forloop.first %}
-                <h1 class="text-center" style="padding-top: 8px;">{{i}}</h1>
-              {% endif %}
-            {% endfor %}
-          </div>
-        </a>
+          <a href="{% url 'create_profile' %}" class="logo d-flex align-items-center">
+            <!-- Uncomment the line below if you also wish to use an image logo -->
+            <div style="width: 50px; height:50px; background-color:brown; border-radius: 50%; color:white">
+              {% for i in user.username %}
+                {% if forloop.first %}
+                  <h1 class="text-center" style="padding-top: 8px;">{{i}}</h1>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </a>
         {% endif %}
       {%else%}
       <div class="au" style="max-width: 500px">
