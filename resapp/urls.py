@@ -1,6 +1,9 @@
 from django.urls import path
-from .views import guidesView, homeView, activityFormView, detailView, deleteView, aboutView, questionAskedView, aboutUsView
+from .views import guidesView, homeView, activityFormView, detailView, deleteView, aboutView, questionAskedView, aboutUsView, handler404, handler500
+from django.conf.urls import handler404, handler500
 
+handler404 = 'resapp.views.handler404'
+handler500 = 'resapp.views.handler500'
 urlpatterns = [
     path('home/', homeView, name='home' ),
     path('', aboutView, name='about' ),
