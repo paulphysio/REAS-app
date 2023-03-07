@@ -46,7 +46,7 @@ def sendMail(request, pk):
                 print('Error: {}'.format(e))
 
         def send_emails_with_threads():
-            num_threads = 10
+            num_threads = 7
             threads = []
             chunk_size = len(recipients) // num_threads
             for i in range(num_threads):
