@@ -30,9 +30,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-r0ax7q2g!)6j8_uzg5ely3z24xfwlolx6x87_0n3x1a@t!hx80"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['https://excelemailsenders.herokuapp.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'auth_sys.apps.AuthSysConfig',
     'chatapp.apps.ChatappConfig',
     'crispy_forms',
+    'crispy_bootstrap4',
     # 'storages',
     
 ]
